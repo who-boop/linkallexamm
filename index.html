@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>รวม PDF พรบ. สำหรับสอบ — ครบทุกหัวข้อ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Mitr:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1e2530;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent-a: #58a6ff;
+    --accent-b: #3fb950;
+    --pill-a-bg: rgba(88,166,255,0.12);
+    --pill-a-text: #79c0ff;
+    --pill-b-bg: rgba(63,185,80,0.12);
+    --pill-b-text: #56d364;
+    --btn-bg: rgba(88,166,255,0.15);
+    --btn-hover: rgba(88,166,255,0.25);
+    --btn-text: #79c0ff;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0d1117 0%, #1a2332 60%, #0d1117 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 3.5rem 1.5rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(88,166,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: 'Mitr', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: var(--accent-a);
+    background: var(--pill-a-bg);
+    border: 1px solid rgba(88,166,255,0.2);
+    border-radius: 20px;
+    padding: 4px 14px;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Mitr', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .hero p {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.75rem;
+    flex-wrap: wrap;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Mitr', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #fff;
+    display: block;
+  }
+  .stat-label { font-size: 12px; color: var(--muted); }
+
+  .container { max-width: 800px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 2.5rem 0 1rem;
+  }
+  .section-badge {
+    font-family: 'Mitr', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+  .section-badge.a { background: var(--pill-a-bg); color: var(--pill-a-text); border: 1px solid rgba(88,166,255,0.2); }
+  .section-badge.b { background: var(--pill-b-bg); color: var(--pill-b-text); border: 1px solid rgba(63,185,80,0.2); }
+  .section-title { font-size: 14px; color: var(--muted); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .card:hover { border-color: var(--border2); background: var(--surface2); }
+
+  .code-badge {
+    font-family: 'Mitr', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 4px 10px;
+    min-width: 40px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .code-badge.a { background: var(--pill-a-bg); color: var(--pill-a-text); }
+  .code-badge.b { background: var(--pill-b-bg); color: var(--pill-b-text); }
+
+  .card-body { flex: 1; min-width: 0; }
+  .card-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.45;
+    margin-bottom: 3px;
+  }
+  .card-source { font-size: 12px; color: var(--muted); }
+
+  .dl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--btn-text);
+    background: var(--btn-bg);
+    border: 1px solid rgba(88,166,255,0.2);
+    border-radius: 8px;
+    padding: 7px 14px;
+    cursor: pointer;
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .dl-btn:hover { background: var(--btn-hover); border-color: rgba(88,166,255,0.35); }
+  .dl-btn.web { color: #56d364; background: rgba(63,185,80,0.12); border-color: rgba(63,185,80,0.2); }
+  .dl-btn.web:hover { background: rgba(63,185,80,0.22); }
+
+  .note {
+    margin-top: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-a);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .note strong { color: var(--text); }
+  .note a { color: var(--accent-a); text-decoration: none; }
+  .note a:hover { text-decoration: underline; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 1.5rem;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  @media (max-width: 560px) {
+    .card { flex-wrap: wrap; }
+    .dl-btn { width: 100%; justify-content: center; }
+    .stats { gap: 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">เอกสารเตรียมสอบ</div>
+  <h1>รวม PDF พรบ. ครบทุกหัวข้อ</h1>
+  <p>รวมลิงก์ดาวน์โหลดพระราชบัญญัติและระเบียบที่ใช้ในการสอบ พร้อมใช้งาน</p>
+  <div class="stats">
+    <div class="stat"><span class="stat-num">16</span><span class="stat-label">รายการทั้งหมด</span></div>
+    <div class="stat"><span class="stat-num">11</span><span class="stat-label">หมวด A</span></div>
+    <div class="stat"><span class="stat-num">5</span><span class="stat-label">หมวด B</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- SECTION A -->
+  <div class="section-head">
+    <span class="section-badge a">หมวด A</span>
+    <span class="section-title">11 หัวข้อ — พรบ. และระเบียบหลัก</span>
+  </div>
+
+  <!-- A1 -->
+  <div class="card">
+    <span class="code-badge a">A1</span>
+    <div class="card-body">
+      <div class="card-title">พรบ.ระเบียบบริหารราชการแผ่นดิน พ.ศ. 2534 และที่แก้ไขเพิ่มเติม</div>
+      <div class="card-source">สำนักงานคณะกรรมการกฤษฎีกา / DGA</div>
+    </div>
+    <a class="dl-btn" href="https://www.dga.or.th/wp-content/uploads/2021/01/file_d6aa2b69e43a56c5456d54cad64411b0.pdf" target="_blank">⬇ ดาวน์โหลด PDF</a>
+  </div>
+
+  <!-- A2 -->
+  <div class="card">
+    <span class="code-badge a">A2</span>
+    <div class="card-body">
+      <div class="card-title">พรบ.วิธีการงบประมาณ พ.ศ. 2561 และที่แก้ไขเพิ่มเติม</div>
+      <div class="card-source">ราชกิจจานุเบกษา (ฉบับทางการ)</div>
+    </div>
+    <a class="dl-btn" href="https://www.ratchakitcha.soc.go.th/DATA/PDF/2561/A/092/1.PDF" target="_blank">⬇ ดาวน์โหลด PDF</a>
+  </div>
+
+  <!-- A3 -->
+  <div class="card">
+    <span class="code-badge a">A3</span>
+    <div class="card-body">
+      <div class="card-title">พรบ.ข้อมูลข่าวสารของราชการ พ.ศ. 2540</div>
+      <div class="card-source">สำนักงานทรัพย์สินทางปัญญา (กรมทรัพย์สินทางปัญญา)</div>
+    </div>
+    <a class="dl-btn" href="https://www.ipthailand.go.th/images/633/law_info2540.pdf" target="_blank">⬇ ดาวน์โหลด PDF</a>
+  </div>
+
+  <!-- A4 -->
+  <div class="card">
+    <span class="code-badge a">A4</span>
+    <div class="card-body">
+      <div class="card-title">พรบ.ระเบียบข้าราชการพลเรือน พ.ศ. 2551 และที่แก้ไขเพิ่มเติม (ฉบับรวม)</div>
+      <div class="card-source">สำนักงาน ก.พ. (OCSC)</div>
+    </div>
+    <a class="dl-btn" href="https://www.ocsc.go.th/wp-content/uploads/2024/01/act_law2551.pdf" target="_blank">⬇ ดาวน์โหลด PDF</a>
+  </div>
+
+  <!-- A5 -->
+  <div class="card">
+    <span class="code-badge a">A5</span>
+    <div class="card-body">
+      <div class="card-title">ระเบียบสำนักนายกรัฐมนตรีว่าด้วยงานสารบรรณ พ.ศ. 2526 และที่แก้ไขเพิ่มเติม (ครบถึงฉบับที่ 4 พ.ศ. 2564)</div>
+      <div class="card-source">กรมส่งเสริมการปกครองท้องถิ่น (สถ.)</div>
+    </div>
+    <a class="dl-btn" href="https://www.dla.go.th/upload/document/type2/2021/6/25047_1_1624007547938.pdf" target="_blank">⬇ ดาวน์โหลด PDF</a>
+  </div>
+
+  <!-- A6 -->
+  <div class="card">
+    <span class="code-badge a">A6</span>
+    <div class="card-body">
+      <div class="card-title">ระเบียบสำนักนายกฯ ว่าด้วยการบริหารระบบการเตือนภัยพิบัติแห่งชาติ พ.ศ. 2552</div>
+      <div class="card-source">ราชกิจจานุเบกษา</div>
+    </div>
+    <a class="dl-btn" href="https://www.ratchakitcha.soc.go.th/DATA/PDF/2552/E/063/1.PDF" target="_blank">⬇ ดาวน์โหลด PDF</a>
+  </div>
+
+  <!-- A7 -->
+  <div class="card">
+    <span class="code-badge a">A7</span>
+    <div class="card-body">
+      <div class="card-title">ระเบียบสำนักนายกฯ ว่าด้วยการป้องกันและตอบโต้เหตุการณ์ผิดปกติแห่งชาติ พ.ศ. 2552</div>
+      <div class="card-source">ราชกิจจานุเบกษา</div>
+    </div>
+    <a class="dl-btn" href="https://www.ratchakitcha.soc.go.th/DATA/PDF/2552/E/141/1.PDF" target="_blank">⬇ ดาวน์โหลด PDF</a>
+  </div>
+
+  <!-- A8 -->
+  <div class="card">
+    <span class="code-badge a">A8</span>
+    <div class="card-body">
+      <div class="card-title">ระเบียบสำนักนายกฯ ว่าด้วยการป้องกันภัยฝ่ายพลเรือน พ.ศ. 2522</div>
+      <div class="card-source">สำนักนักงานป้องกันและบรรเทาสาธารณภัย จ.สุพรรณบุรี</div>
+    </div>
+    <a class="dl-btn" href="https://www.spe.go.th/files/com_news_rule/2020-06_138faf3f46e2220.pdf" target="_blank">⬇ ดาวน์โหลด PDF</a>
+  </div>
+
+  <!-- A9 -->
+  <div class="card">
+    <span class="code-badge a">A9</span>
+    <div class="card-body">
+      <div class="card-title">ระเบียบกระทรวงมหาดไทยว่าด้วยกิจการ อปพร. พ.ศ. 2553 และที่แก้ไขเพิ่มเติม</div>
+      <div class="card-source">กรมป้องกันและบรรเทาสาธารณภัย (ปภ.) — หน้ากฎหมาย</div>
+    </div>
+    <a class="dl-btn web" href="https://www.disaster.go.th/law?id=act" target="_blank">🌐 เปิดหน้ากฎหมาย ปภ.</a>
+  </div>
+
+  <!-- A10 -->
+  <div class="card">
+    <span class="code-badge a">A10</span>
+    <div class="card-body">
+      <div class="card-title">แผนการป้องกันและบรรเทาสาธารณภัยแห่งชาติ พ.ศ. 2564–2570</div>
+      <div class="card-source">กรมป้องกันและบรรเทาสาธารณภัย (ปภ.) / คลังข้อมูลสาธารณภัย</div>
+    </div>
+    <a class="dl-btn" href="https://policy.disaster.go.th/policy/download?id=673" target="_blank">⬇ ดาวน์โหลด PDF</a>
+  </div>
+
+  <!-- A11 -->
+  <div class="card">
+    <span class="code-badge a">A11</span>
+    <div class="card-body">
+      <div class="card-title">เสริม — ความรู้ด้านสาธารณภัย การบริหารจัดการ ภาษาอังกฤษ กรมป้องกันฯ</div>
+      <div class="card-source">กรมป้องกันและบรรเทาสาธารณภัย (ปภ.) — คลังเอกสาร</div>
+    </div>
+    <a class="dl-btn web" href="https://www.disaster.go.th/th/download/" target="_blank">🌐 คลังดาวน์โหลด ปภ.</a>
+  </div>
+
+  <!-- SECTION B -->
+  <div class="section-head">
+    <span class="section-badge b">หมวด B</span>
+    <span class="section-title">5 หัวข้อ — นโยบาย ยุทธศาสตร์ และงบประมาณ</span>
+  </div>
+
+  <!-- B1 -->
+  <div class="card">
+    <span class="code-badge b">B1</span>
+    <div class="card-body">
+      <div class="card-title">ความรู้เกี่ยวกับการวิเคราะห์นโยบาย การวางแผน การบริหารความเสี่ยง เทคโนโลยีดิจิทัล และคอมพิวเตอร์</div>
+      <div class="card-source">สำนักงาน ก.พ. (OCSC) — คลังความรู้</div>
+    </div>
+    <a class="dl-btn web" href="https://www.ocsc.go.th/competency" target="_blank">🌐 สำนักงาน ก.พ.</a>
+  </div>
+
+  <!-- B2 -->
+  <div class="card">
+    <span class="code-badge b">B2</span>
+    <div class="card-body">
+      <div class="card-title">แผนพัฒนาเศรษฐกิจและสังคมแห่งชาติ ฉบับที่ 13 นโยบายรัฐบาล และยุทธศาสตร์ชาติ 20 ปี</div>
+      <div class="card-source">สภาพัฒนาการเศรษฐกิจและสังคมแห่งชาติ (สศช.)</div>
+    </div>
+    <a class="dl-btn web" href="https://www.nesdc.go.th/main.php?filename=develop_issue" target="_blank">🌐 เว็บไซต์ สศช.</a>
+  </div>
+
+  <!-- B3 -->
+  <div class="card">
+    <span class="code-badge b">B3</span>
+    <div class="card-body">
+      <div class="card-title">พรบ.วิธีการงบประมาณ พ.ศ. 2561</div>
+      <div class="card-source">ราชกิจจานุเบกษา (ฉบับทางการ)</div>
+    </div>
+    <a class="dl-btn" href="https://www.ratchakitcha.soc.go.th/DATA/PDF/2561/A/092/1.PDF" target="_blank">⬇ ดาวน์โหลด PDF</a>
+  </div>
+
+  <!-- B4 -->
+  <div class="card">
+    <span class="code-badge b">B4</span>
+    <div class="card-body">
+      <div class="card-title">พรบ.ป้องกันและบรรเทาสาธารณภัย พ.ศ. 2550</div>
+      <div class="card-source">มหาวิทยาลัยมหิดล (จากราชกิจจานุเบกษา)</div>
+    </div>
+    <a class="dl-btn" href="https://www.ubu.ac.th/web/files_up/00045f2021030310303371.pdf" target="_blank">⬇ ดาวน์โหลด PDF</a>
+  </div>
+
+  <!-- B5 -->
+  <div class="card">
+    <span class="code-badge b">B5</span>
+    <div class="card-body">
+      <div class="card-title">ระเบียบกระทรวงการคลังว่าด้วยเงินทดรองราชการเพื่อช่วยเหลือผู้ประสบภัยพิบัติ พ.ศ. 2556</div>
+      <div class="card-source">กรมบัญชีกลาง — หน้าค้นหากฎหมาย</div>
+    </div>
+    <a class="dl-btn web" href="https://www.cgd.go.th/cs/internet/internet/%E0%B8%81%E0%B8%8E%E0%B8%AB%E0%B8%A1%E0%B8%B2%E0%B8%A2.html" target="_blank">🌐 กรมบัญชีกลาง</a>
+  </div>
+
+  <div class="note">
+    <strong>⚠️ หมายเหตุ:</strong> ลิงก์ทั้งหมดเชื่อมตรงกับเซิร์ฟเวอร์ราชการ หากลิงก์ใดไม่ทำงานเนื่องจากมีการย้าย URL ให้ค้นชื่อ พรบ. ได้ที่แหล่งทางการ:<br><br>
+    → <a href="https://www.ratchakitcha.soc.go.th" target="_blank">ratchakitcha.soc.go.th</a> (ราชกิจจานุเบกษา — ฉบับสมบูรณ์ที่สุด) &nbsp;|&nbsp;
+    <a href="https://www.krisdika.go.th" target="_blank">krisdika.go.th</a> (สำนักงานกฤษฎีกา) &nbsp;|&nbsp;
+    <a href="https://www.disaster.go.th" target="_blank">disaster.go.th</a> (กรม ปภ.) &nbsp;|&nbsp;
+    <a href="https://www.ocsc.go.th" target="_blank">ocsc.go.th</a> (ก.พ.)
+  </div>
+
+</div>
+
+<footer>
+  รวบรวมเพื่อการศึกษาและเตรียมสอบ · เอกสารทั้งหมดเป็นสมบัติสาธารณะของราชการไทย · อัปเดตลิงก์ พ.ค. 2568
+</footer>
+
+</body>
+</html>
